@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { User, EnhancedMessage } from '../../types';
+import { ChatBubbleLeftIcon } from "@heroicons/react/24/outline";
 import { EnhancedMessageBubble } from './EnhancedMessageBubble';
 import { EnhancedMessageInput } from './EnhancedMessageInput';
 import { TypingIndicator } from './TypingIndicator';
