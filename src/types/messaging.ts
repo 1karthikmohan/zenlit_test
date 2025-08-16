@@ -19,19 +19,12 @@ export interface TypingIndicator {
 
 export interface EnhancedMessage {
   id: string;
+  text: string;            // required
   senderId: string;
-  receiverId: string;
-  content: string;
-  timestamp: string;
-  read: boolean;
-  status: 'sending' | 'delivered' | 'read' | 'failed';
-  readAt?: string;
-  type: 'text' | 'image' | 'file';
-  metadata?: {
-    fileName?: string;
-    fileSize?: number;
-    mimeType?: string;
-  };
+  timestamp: number;
+  isRead?: boolean;        // optional
+  reactions?: string[];    // optional
+  attachments?: string[];  // optional: image/file URLs
 }
 
 export interface ChatSession {

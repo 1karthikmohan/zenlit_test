@@ -1,5 +1,5 @@
 import type React from 'react';
-
+export * from "./types/messaging";
 export interface User {
   id: string;
   name: string;
@@ -25,16 +25,6 @@ export interface User {
   twitterUrl?: string;
 }
 
-export interface EnhancedMessage {
-  id: string;              // unique message id
-  senderId: string;        // user id of sender
-  senderName?: string;     // optional sender name
-  text: string;            // message text
-  timestamp: number;       // unix timestamp or Date.getTime()
-  isRead?: boolean;        // optional: read/unread state
-  reactions?: string[];    // optional: reactions like 👍❤️😂
-  attachments?: string[];  // optional: image/file URLs
-}
 
 export interface Post {
   id: string;
