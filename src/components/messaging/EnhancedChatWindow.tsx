@@ -282,7 +282,7 @@ export const EnhancedChatWindow: React.FC<Props> = ({
                   isCurrentUser={isCurrentUser}
                   showStatus={isCurrentUser}
                   showAvatar={showAvatar}
-                  userAvatar={user.dpUrl}
+                  userAvatar={user.dpUrl || '/user.png'}
                   userName={user.name}
                   onRetry={handleRetryMessage}
                 />
