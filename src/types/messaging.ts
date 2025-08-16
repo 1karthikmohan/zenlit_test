@@ -19,12 +19,12 @@ export interface TypingIndicator {
 
 export interface EnhancedMessage {
   id: string;
-  text: string;            // required
+  content: string;            // Corrected property name
   senderId: string;
   timestamp: number;
-  isRead?: boolean;        // optional
-  reactions?: string[];    // optional
-  attachments?: string[];  // optional: image/file URLs
+  isRead?: boolean;
+  reactions?: string[];
+  attachments?: string[];
 }
 
 export interface ChatSession {
