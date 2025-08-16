@@ -8,6 +8,7 @@ import { UserProfileModal } from './UserProfileModal';
 import { useRealtimeMessaging } from '../../hooks/useRealtimeMessaging';
 import { ChevronLeftIcon, UserIcon, WifiIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { motion, AnimatePresence } from 'framer-motion';
+import { supabase } from '../../lib/supabaseClient';
 
 interface Props {
   user: User;
