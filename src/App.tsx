@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react';
-import EnhancedMessagesScreen from "./screens/EnhancedMessagesScreen";
+import { EnhancedMessagesScreen } from "./screens/EnhancedMessagesScreen";
 import { WelcomeScreen } from './screens/WelcomeScreen';
 import { LoginScreen } from './screens/LoginScreen';
 import { ProfileSetupScreen } from './screens/ProfileSetupScreen';
