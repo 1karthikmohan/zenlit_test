@@ -23,6 +23,7 @@ export interface EnhancedMessage {
   senderId: string;
   timestamp: number;
   isRead?: boolean;
+  status?: 'failed' | 'sent' | 'pending';
   reactions?: string[];
   attachments?: string[];
 }
