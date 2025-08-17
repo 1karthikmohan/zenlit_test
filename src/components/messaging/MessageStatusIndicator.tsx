@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { format } from 'date-fns';
 
 interface Props {
-  status: 'pending' | 'sending' | 'sent' | 'delivered' | 'read' | 'failed';
+  status?: 'pending' | 'sending' | 'sent' | 'delivered' | 'read' | 'failed';
   readAt?: string;
   timestamp: string;
   showTimestamp?: boolean;
