@@ -1,6 +1,5 @@
 'use client'
 import { useState, useEffect } from 'react';
-import { EnhancedMessagesScreen } from "./screens/EnhancedMessagesScreen";
 import { WelcomeScreen } from './screens/WelcomeScreen';
 import { LoginScreen } from './screens/LoginScreen';
 import { ProfileSetupScreen } from './screens/ProfileSetupScreen';
@@ -12,7 +11,6 @@ import { CreatePostScreen } from './screens/CreatePostScreen';
 import { MessagesScreen } from './screens/MessagesScreen';
 import { UserGroupIcon, HomeIcon, UserIcon, PlusIcon, ChatBubbleLeftIcon } from '@heroicons/react/24/outline';
 import { User } from './types';
-import './styles/messaging.css';
 import { supabase, onAuthStateChange } from './lib/supabase';
 import { checkSession, handleRefreshTokenError } from './lib/auth';
 import { locationToggleManager } from './lib/locationToggle';
@@ -437,7 +435,7 @@ export default function App() {
               )}
               {activeTab === 'messages' && (
                 <div className="h-full">
-                  <EnhancedMessagesScreen
+                  <MessagesScreen
                     selectedUser={selectedChatUser}
                     onClearSelectedUser={() => setSelectedChatUser(null)}
                     onViewProfile={handleViewProfile}

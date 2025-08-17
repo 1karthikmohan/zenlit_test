@@ -1,5 +1,5 @@
 import type React from 'react';
-export * from "./types/messaging";
+
 export interface User {
   id: string;
   name: string;
@@ -24,7 +24,6 @@ export interface User {
   linkedInUrl?: string;
   twitterUrl?: string;
 }
-
 
 export interface Post {
   id: string;
