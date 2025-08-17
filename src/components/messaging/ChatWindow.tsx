@@ -59,8 +59,9 @@ export const ChatWindow = ({
         filter: `sender_id=eq.${user.id}&receiver_id=eq.${currentUserId}`,
       },
       (payload) => {
-        console.log("📩 New message payload:", payload);
-        const d: any = payload.new;
+        try {
+          console.log("📩 New message payload:", payload);
+          const d: any = payload.new;
         const msg: Message = {
           id: d.id,
           senderId: d.sender_id,
@@ -83,6 +84,9 @@ export const ChatWindow = ({
 
         if (payload.eventType === 'INSERT') {
           markMessagesAsRead(currentUserId, user.id).catch(() => {});
+        }
+        } catch (err) {
+          console.error("⚠️ ChatWindow realtime handler error:", err, payload);
         }
       }
     );

@@ -88,8 +88,9 @@ export const MessagesScreen: React.FC<Props> = ({
 
     channel.on(
       'postgres_changes',
-      { event: 'INSERT', schema: 'public', table: 'messages', filter: `receiver_id=eq.${currentUserId}` },
+      { event: '*', schema: 'public', table: 'messages', filter: `receiver_id=eq.${currentUserId}` },
       (payload) => {
+        try {
         const data = payload.new as any;
         const incoming: Message = {
           id: data.id,
@@ -114,7 +115,9 @@ export const MessagesScreen: React.FC<Props> = ({
       }
     );
 
-    channel.subscribe();
+    channel.subscribe((status) => {
+      console.log('📡 Inbox channel status:', status);
+    });
 
     return () => {
       supabase.removeChannel(channel);
