@@ -91,29 +91,33 @@ export const MessagesScreen: React.FC<Props> = ({
       { event: '*', schema: 'public', table: 'messages', filter: `receiver_id=eq.${currentUserId}` },
       (payload) => {
         try {
-        const data = payload.new as any;
-        const incoming: Message = {
-          id: data.id,
-          senderId: data.sender_id,
-          receiverId: data.receiver_id,
-          content: data.content,
-          timestamp: data.created_at,
-          read: data.read,
-        };
-
-        setAllMessages((prev) => {
-          if (prev.some((m) => m.id === incoming.id)) return prev;
-          return [...prev, incoming];
-        });
-
-        if (selectedUser?.id !== incoming.senderId) {
-          setHasUnread(true);
-          setUnreadByUser((prev) => ({ ...prev, [incoming.senderId]: true }));
-        } else if (isValidUuid(currentUserId) && isValidUuid(incoming.senderId)) {
-          markMessagesAsRead(currentUserId, incoming.senderId);
+          const data = payload.new as any;
+          const incoming: Message = {
+            id: data.id,
+            senderId: data.sender_id,
+            receiverId: data.receiver_id,
+            content: data.content,
+            timestamp: data.created_at,
+            read: data.read,
+          };
+    
+          setAllMessages((prev) => {
+            if (prev.some((m) => m.id === incoming.id)) return prev;
+            return [...prev, incoming];
+          });
+    
+          if (selectedUser?.id !== incoming.senderId) {
+            setHasUnread(true);
+            setUnreadByUser((prev) => ({ ...prev, [incoming.senderId]: true }));
+          } else if (isValidUuid(currentUserId) && isValidUuid(incoming.senderId)) {
+            markMessagesAsRead(currentUserId, incoming.senderId);
+          }
+        } catch (err) {
+          console.error('Realtime inbox handler error:', err);
         }
-      }
-    );
+      } // 👈 closes the callback
+    );   // 👈 closes channel.on
+    
 
     channel.subscribe((status) => {
       console.log('📡 Inbox channel status:', status);
