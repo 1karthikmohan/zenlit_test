@@ -53,7 +53,7 @@ export const ChatWindow = ({
     channel.on(
       'postgres_changes',
       {
-        event: 'INSERT',
+        event: '*',
         schema: 'public',
         table: 'messages',
         filter: `sender_id=eq.${user.id}&receiver_id=eq.${currentUserId}`,
@@ -69,11 +69,21 @@ export const ChatWindow = ({
           timestamp: d.created_at,
           read: d.read,
         };
+
         setChatMessages((prev) => {
-          if (prev.some((m) => m.id === msg.id)) return prev;
-          return [...prev, msg];
+          if (payload.eventType === 'INSERT') {
+            if (prev.some((m) => m.id === msg.id)) return prev;
+            return [...prev, msg];
+          }
+          if (payload.eventType === 'UPDATE') {
+            return prev.map((m) => (m.id === msg.id ? msg : m));
+          }
+          return prev;
         });
-        markMessagesAsRead(currentUserId, user.id).catch(() => {});
+
+        if (payload.eventType === 'INSERT') {
+          markMessagesAsRead(currentUserId, user.id).catch(() => {});
+        }
       }
     );
 
