@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { User } from '../../types';
 import { XMarkIcon, ChatBubbleLeftIcon } from '@heroicons/react/24/outline';
@@ -80,22 +81,11 @@ export const UserProfileModal: React.FC<Props> = ({
           <div>
             <h2 className="text-xl font-bold text-white">{user.name}</h2>
             {user.username && (
-              <p className="text-gray-400 text-sm">@{user.username}</p>
+              <Link href={`/profile/${user.username}`} className="text-blue-400 hover:underline text-sm">@{user.username}</Link>
             )}
             <p className="text-gray-300 mt-2 leading-relaxed">{user.bio}</p>
           </div>
 
-          {/* User Stats */}
-          <div className="flex items-center gap-4 text-sm">
-            <div className="flex items-center gap-1">
-              <span className="text-gray-400">Age:</span>
-              <span className="text-white">{user.age}</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <span className="text-gray-400">Distance:</span>
-              <span className="text-white">{user.distance}km away</span>
-            </div>
-          </div>
 
           {/* Social Links */}
           <div>

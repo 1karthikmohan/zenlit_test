@@ -19,6 +19,7 @@ export const useRealtimeMessaging = ({
   onConnectionChange
 }: UseRealtimeMessagingOptions) => {
   const [isConnected, setIsConnected] = useState(false);
+  const [retryAttempts, setRetryAttempts] = useState(0);
   const [typingUsers, setTypingUsers] = useState<TypingIndicator[]>([]);
   const subscriptionRef = useRef<RealtimeSubscription | null>(null);
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -41,6 +42,9 @@ export const useRealtimeMessaging = ({
       heartbeatRef.current = null;
     }
   }, []);
+
+  // --------- Helper to compute backoff (ms) ----------
+  const getBackoff = (attempt: number) => Math.min(500 * 2 ** attempt, 30000) + Math.floor(Math.random() * 500);
 
   // Initialize real-time subscription
   useEffect(() => {
@@ -136,7 +140,20 @@ export const useRealtimeMessaging = ({
     // Subscribe to channel
     channel.subscribe((status) => {
       console.log('📡 Subscription status:', status);
-      setIsConnected(status === 'SUBSCRIBED');
+      const connected = status === 'SUBSCRIBED';
+      setIsConnected(connected);
+
+      if (!connected && (status === 'CLOSED' || status === 'TIMED_OUT' || status === 'CHANNEL_ERROR')) {
+        // Schedule reconnect with backoff
+        const delay = getBackoff(retryAttempts);
+        console.warn(`Realtime channel closed (status: ${status}). Reconnecting in ${delay}ms`);
+        setTimeout(() => {
+          setRetryAttempts((a) => a + 1);
+        }, delay);
+      } else if (connected) {
+        // Reset retry attempts on successful connection
+        setRetryAttempts(0);
+      }
     });
 
     subscriptionRef.current = {
@@ -153,7 +170,7 @@ export const useRealtimeMessaging = ({
     }, 30000); // 30 seconds
 
     return cleanup;
-  }, [currentUserId, partnerId, onMessageReceived, onTypingUpdate, onConnectionChange, cleanup]);
+  }, [currentUserId, partnerId, retryAttempts, onMessageReceived, onTypingUpdate, onConnectionChange, cleanup]);
 
   // Send typing indicator
   const sendTypingIndicator = useCallback(async (isTyping: boolean, userName: string) => {

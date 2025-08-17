@@ -5,7 +5,7 @@ import { EnhancedMessageBubble } from './EnhancedMessageBubble';
 import { EnhancedMessageInput } from './EnhancedMessageInput';
 import { UserProfileModal } from './UserProfileModal';
 import { useRealtimeMessaging } from '../../hooks/useRealtimeMessaging';
-import { ChevronLeftIcon, UserIcon, WifiIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import { ChevronLeftIcon, WifiIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '../../lib/supabaseClient';
 
@@ -221,15 +221,6 @@ export const EnhancedChatWindow: React.FC<Props> = ({
           </button>
 
           {/* Profile button for anonymous users */}
-          {!isAnonymous && (
-            <button
-              onClick={handleProfileClick}
-              className="ml-2 p-2 rounded-full hover:bg-gray-800 active:scale-95 transition-all"
-              title="View profile"
-            >
-              <UserIcon className="w-5 h-5 text-gray-400" />
-            </button>
-          )}
         </div>
       </div>
 
