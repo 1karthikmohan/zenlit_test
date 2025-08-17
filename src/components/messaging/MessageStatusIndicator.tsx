@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { format } from 'date-fns';
 
 interface Props {
-  status: 'sending' | 'delivered' | 'read' | 'failed';
+  status: 'pending' | 'sending' | 'sent' | 'delivered' | 'read' | 'failed';
   readAt?: string;
   timestamp: string;
   showTimestamp?: boolean;
@@ -23,6 +23,7 @@ export const MessageStatusIndicator: React.FC<Props> = ({
 
   const getStatusIcon = () => {
     switch (status) {
+      case 'pending':
       case 'sending':
         return (
           <motion.div
@@ -33,6 +34,7 @@ export const MessageStatusIndicator: React.FC<Props> = ({
           </motion.div>
         );
       
+      case 'sent':
       case 'delivered':
         return (
           <motion.div
@@ -79,8 +81,10 @@ export const MessageStatusIndicator: React.FC<Props> = ({
       const baseTime = format(new Date(timestamp), 'HH:mm');
       
       switch (status) {
+        case 'pending':
         case 'sending':
           return `Sending... • ${baseTime}`;
+        case 'sent':
         case 'delivered':
           return `Delivered • ${baseTime}`;
         case 'read':

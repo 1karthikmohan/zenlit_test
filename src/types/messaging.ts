@@ -5,7 +5,7 @@
 export interface MessageStatus {
   id: string;
   messageId: string;
-  status: 'sending' | 'delivered' | 'read' | 'failed';
+  status: 'sending' | 'pending' | 'sent' | 'delivered' | 'read' | 'failed';
   timestamp: string;
   readAt?: string;
 }
@@ -21,9 +21,13 @@ export interface EnhancedMessage {
   id: string;
   content: string;            // Corrected property name
   senderId: string;
-  timestamp: number;
-  isRead?: boolean;
-  status?: 'failed' | 'sent' | 'pending';
+  receiverId: string;
+  timestamp: string;          // ISO timestamp
+  read?: boolean;
+  readAt?: string;
+  status?: 'sending' | 'pending' | 'sent' | 'delivered' | 'read' | 'failed';
+  type?: 'text' | 'image' | 'file';
+  metadata?: Record<string, any>;
   reactions?: string[];
   attachments?: string[];
 }
