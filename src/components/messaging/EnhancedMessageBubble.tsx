@@ -110,16 +110,6 @@ export const EnhancedMessageBubble: React.FC<Props> = ({
           )}
         </motion.div>
 
-        {/* Read Receipt Details */}
-        {isCurrentUser && message.status === 'read' && message.readAt && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            className="text-xs text-blue-400 mt-1 text-right"
-          >
-            Read {format(new Date(message.readAt), 'MMM d, HH:mm')}
-          </motion.div>
-        )}
       </div>
     </motion.div>
   );

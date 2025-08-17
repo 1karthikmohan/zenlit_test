@@ -145,26 +145,19 @@ export const EnhancedMessagesScreen: React.FC<Props> = ({
 
       // Transform profiles to users
       const allProfiles = [...nearbyProfiles, ...historyProfiles];
-      const transformedUsers: User[] = allProfiles.map(profile => ({
-        id: profile.id,
-        name: profile.name || 'Anonymous',
-        username: profile.username,
-        dpUrl: profile.profile_photo_url || null,
-        bio: profile.bio || '',
-        gender: profile.gender || 'male',
-        age: profile.date_of_birth
-          ? new Date().getFullYear() - new Date(profile.date_of_birth).getFullYear()
-          : 25,
-        distance: Math.floor(Math.random() * 50) + 1,
-        links: {
-          Twitter: profile.twitter_url || '#',
-          Instagram: profile.instagram_url || '#',
-          LinkedIn: profile.linked_in_url || '#',
-        },
-        instagramUrl: profile.instagram_url,
-        linkedInUrl: profile.linked_in_url,
-        twitterUrl: profile.twitter_url,
-      }));
+      const transformedUsers: User[] = allProfiles.map(profile => {
+        const isNearby = nearIds.includes(profile.id);
+        return {
+          id: profile.id,
+          name: isNearby ? (profile.name || 'User') : 'Anonymous',
+          dpUrl: isNearby ? (profile.dpUrl || profile.avatar_url || null) : null,
+          bio: isNearby ? (profile.bio || '') : '',
+          gender: profile.gender || 'male',
+          age: profile.age || 18,
+          distance: profile.distance || 0,
+          links: isNearby ? (profile.links || {}) : {}
+        };
+      });
 
       setAllUsers(transformedUsers);
       setNearbyIds(nearIds);

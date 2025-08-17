@@ -3,7 +3,6 @@ import { User, EnhancedMessage } from '../../types';
 import { ChatBubbleLeftIcon } from "@heroicons/react/24/outline";
 import { EnhancedMessageBubble } from './EnhancedMessageBubble';
 import { EnhancedMessageInput } from './EnhancedMessageInput';
-import { TypingIndicator } from './TypingIndicator';
 import { UserProfileModal } from './UserProfileModal';
 import { useRealtimeMessaging } from '../../hooks/useRealtimeMessaging';
 import { ChevronLeftIcon, UserIcon, WifiIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
@@ -34,9 +33,7 @@ export const EnhancedChatWindow: React.FC<Props> = ({
   // Real-time messaging hook
   const {
     isConnected,
-    typingUsers,
     sendMessage,
-    sendTypingIndicator,
     markAsRead
   } = useRealtimeMessaging({
     currentUserId,
@@ -113,14 +110,6 @@ export const EnhancedChatWindow: React.FC<Props> = ({
     }
   };
 
-  // Handle typing indicators
-  const handleTypingStart = () => {
-    sendTypingIndicator(true, currentUserName);
-  };
-
-  const handleTypingStop = () => {
-    sendTypingIndicator(false, currentUserName);
-  };
 
   // Handle message retry
   const handleRetryMessage = async (messageId: string) => {
@@ -291,10 +280,6 @@ export const EnhancedChatWindow: React.FC<Props> = ({
           )}
         </AnimatePresence>
         
-        {/* Typing Indicator */}
-        <TypingIndicator 
-          typingUsers={typingUsers.filter(t => t.userId === user.id)} 
-        />
         
         <div ref={messagesEndRef} />
       </div>
@@ -303,10 +288,8 @@ export const EnhancedChatWindow: React.FC<Props> = ({
       <div className="border-t border-gray-800 p-4 bg-black">
         <EnhancedMessageInput
           onSendMessage={handleSendMessage}
-          onTypingStart={handleTypingStart}
-          onTypingStop={handleTypingStop}
-          disabled={!isConnected}
-          placeholder={isConnected ? "Type a message..." : "Reconnecting..."}
+          disabled={!isConnected || isAnonymous}
+          placeholder={isAnonymous ? "You can no longer message this user" : (isConnected ? "Type a message..." : "Reconnecting...")}
         />
       </div>
 
