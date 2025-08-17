@@ -59,6 +59,7 @@ export const ChatWindow = ({
         filter: `sender_id=eq.${user.id}&receiver_id=eq.${currentUserId}`,
       },
       (payload) => {
+        console.log("📩 New message payload:", payload);
         const d: any = payload.new;
         const msg: Message = {
           id: d.id,
@@ -76,7 +77,9 @@ export const ChatWindow = ({
       }
     );
 
-    channel.subscribe();
+    channel.subscribe((status) => {
+      console.log("📡 Chat channel status:", status);
+    });
     return () => {
       supabase.removeChannel(channel);
     };
