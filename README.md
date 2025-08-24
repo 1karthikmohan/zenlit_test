@@ -67,17 +67,28 @@ npm install
    - Copy `.env.example` to `.env.local`
    - Update the Supabase credentials if needed
 
-4. **Run Supabase migrations:**
+4. **Configure Google OAuth (Optional):**
+   - Go to your [Supabase Dashboard](https://supabase.com/dashboard)
+   - Navigate to Authentication > Providers
+   - Enable Google provider
+   - Add your Google OAuth client ID and client secret from [Google Cloud Console](https://console.cloud.google.com/)
+   - In Authentication > Settings, configure:
+     - **Site URL**: `https://zenlit.in` (or your production domain)
+     - **Redirect URLs**: Add both:
+       - `http://localhost:3000` (for development)
+       - `https://zenlit.in` (for production)
+
+5. **Run Supabase migrations:**
 ```bash
 cd supabase && npx supabase db reset
 ```
 
-5. **Start the development server:**
+6. **Start the development server:**
 ```bash
 npm run dev
 ```
 
-6. **Open your browser:**
+7. **Open your browser:**
    Navigate to `http://localhost:3000`
 
 ## 🏗 Project Structure
@@ -112,6 +123,36 @@ npm run dev
 ## 🔐 Social Media Authentication
 
 The app includes a comprehensive social media verification system:
+
+### Google OAuth Integration
+
+The app supports Google OAuth for seamless authentication:
+
+#### Setup Requirements
+1. **Google Cloud Console Setup**:
+   - Create a project in [Google Cloud Console](https://console.cloud.google.com/)
+   - Enable the Google+ API
+   - Create OAuth 2.0 credentials (Web application)
+   - Add authorized redirect URIs:
+     - `https://[your-supabase-project].supabase.co/auth/v1/callback`
+
+2. **Supabase Configuration**:
+   - In your Supabase dashboard, go to Authentication > Providers
+   - Enable Google provider
+   - Add your Google OAuth client ID and client secret
+   - Configure Site URL and Redirect URLs as mentioned above
+
+#### Authentication Flow
+1. User clicks "Continue with Google" button
+2. Redirected to Google OAuth consent screen
+3. After authorization, redirected back to your app
+4. Supabase automatically handles the session creation
+5. User is signed in and redirected to the main app
+
+#### Error Handling
+- Network errors are caught and displayed to the user
+- OAuth failures show user-friendly error messages
+- Loading states provide clear feedback during the redirect process
 
 ### Supported Platforms
 - Instagram
@@ -161,6 +202,8 @@ npm run build
 Make sure to set these in your deployment platform:
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+
+For Google OAuth to work in production, ensure your Supabase project has the correct redirect URLs configured.
 
 ### Progressive Web App
 The project is configured as a PWA using `next-pwa`. When built for production, the app can be installed on mobile devices and works offline.

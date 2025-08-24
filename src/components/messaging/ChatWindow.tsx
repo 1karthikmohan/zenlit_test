@@ -53,15 +53,13 @@ export const ChatWindow = ({
     channel.on(
       'postgres_changes',
       {
-        event: '*',
+        event: 'INSERT',
         schema: 'public',
         table: 'messages',
         filter: `sender_id=eq.${user.id}&receiver_id=eq.${currentUserId}`,
       },
       (payload) => {
-        try {
-          console.log("📩 New message payload:", payload);
-          const d: any = payload.new;
+        const d: any = payload.new;
         const msg: Message = {
           id: d.id,
           senderId: d.sender_id,
@@ -70,30 +68,15 @@ export const ChatWindow = ({
           timestamp: d.created_at,
           read: d.read,
         };
-
         setChatMessages((prev) => {
-          if (payload.eventType === 'INSERT') {
-            if (prev.some((m) => m.id === msg.id)) return prev;
-            return [...prev, msg];
-          }
-          if (payload.eventType === 'UPDATE') {
-            return prev.map((m) => (m.id === msg.id ? msg : m));
-          }
-          return prev;
+          if (prev.some((m) => m.id === msg.id)) return prev;
+          return [...prev, msg];
         });
-
-        if (payload.eventType === 'INSERT') {
-          markMessagesAsRead(currentUserId, user.id).catch(() => {});
-        }
-        } catch (err) {
-          console.error("⚠️ ChatWindow realtime handler error:", err, payload);
-        }
+        markMessagesAsRead(currentUserId, user.id).catch(() => {});
       }
     );
 
-    channel.subscribe((status) => {
-      console.log("📡 Chat channel status:", status);
-    });
+    channel.subscribe();
     return () => {
       supabase.removeChannel(channel);
     };

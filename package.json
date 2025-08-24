@@ -8,6 +8,17 @@
     "dev:web": "next dev",
     "dev:supabase": "npm --prefix supabase run start",
     "build": "next build",
+    "build:pwa": "next build",
+    "build:cap": "npm run build:pwa && npx cap copy",
+    "cap:init": "npx cap init Zenlit com.zenlit.social",
+    "cap:add-android": "npx cap add android",
+    "cap:add-ios": "npx cap add ios",
+    "cap:open-android": "npx cap open android",
+    "cap:open-ios": "npx cap open ios",
+    "cap:run-android": "npx cap run android -l --external",
+    "cap:run-ios": "npx cap run ios -l --external",
+    "cap:sync": "npx cap sync",
+    "cap:generate-assets": "npx @capacitor/resources generate --icon public/icon-512x512.png --splash public/apple-splash-2048-2732.png",
     "start": "next start",
     "lint": "next lint",
     "supabase:reset": "npm --prefix supabase run reset",
@@ -15,23 +26,27 @@
     "pwa:generate-icons": "npx pwa-asset-generator public/logo.png public --icon-only --favicon --type png --padding '10%' --background '#000000'"
   },
   "dependencies": {
+    "@capacitor/android": "^7.4.3",
+    "@capacitor/core": "^7.4.3",
     "@heroicons/react": "^2.0.18",
-    "@tabler/icons-react": "^2.47.0",
     "@radix-ui/react-slot": "^1.0.2",
     "@supabase/supabase-js": "^2.50.0",
+    "@tabler/icons-react": "^2.47.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "date-fns": "^2.30.0",
     "framer-motion": "^10.16.0",
     "lucide-react": "^0.356.0",
     "nanoid": "^4.0.2",
-    "next": "^15.0.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "next": "^15.5.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "tailwind-merge": "^2.0.0",
-  "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^7.4.3",
     "@types/node": "^20.0.0",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
@@ -40,9 +55,9 @@
     "eslint": "^8.0.0",
     "eslint-config-next": "^15.0.0",
     "postcss": "^8.4.27",
+    "pwa-asset-generator": "^6.3.2",
     "tailwindcss": "^3.3.3",
-    "typescript": "^5.0.2",
-    "pwa-asset-generator": "^6.3.2"
+    "typescript": "^5.0.2"
   },
   "engines": {
     "node": ">=18"
